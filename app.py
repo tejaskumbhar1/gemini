@@ -22,5 +22,9 @@ def ask():
     except Exception as e:
         return f"Error generating response: {e}"
 
+@app.route('/ping', methods=['GET'])
+def ping():
+    return "pong"
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=False)  # Explicitly bind to 0.0.0.0    
