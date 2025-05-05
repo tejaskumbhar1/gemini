@@ -1,3 +1,4 @@
+
 from flask import Flask, request
 import google.generativeai as genai
 import os
@@ -22,4 +23,4 @@ def ask():
         return f"Error generating response: {e}"
 
 if __name__ == '__main__':
-    app.run(debug=False, port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=False)  # Explicitly bind to 0.0.0.0    
