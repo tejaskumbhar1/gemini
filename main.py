@@ -5,8 +5,9 @@ import os
 app = Flask(__name__)
 
 # Configure Gemini API key
-GEMINI_API_KEY = "AIzaSyBMyqVdwhbJ3OjLpNVfXs_8oAQ4YEOZhSw"
-
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
+if not GEMINI_API_KEY:
+    raise ValueError("GEMINI_API_KEY environment variable not set.")
 
 genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel('gemini-2.0-flash')
