@@ -1,46 +1,20 @@
-def add(x, y):
-    return x + y
+from flask import Flask, request
+import google.generativeai as genai
 
-def subtract(x, y):
-    return x - y
+app = Flask(__name__)
 
-def multiply(x, y):
-    return x * y
+# Configure Gemini API key
+genai.configure(api_key="AIzaSyBMyqVdwhbJ3OjLpNVfXs_8oAQ4YEOZhSw")
+model = genai.GenerativeModel('gemini-2.0-flash')
 
-def divide(x, y):
-    return x / y
+# Route 1: Accepts a POST request with a question and returns Gemini's response
+@app.route('/query', methods=['POST'])
+def ask():
+    question = request.data.decode("utf-8")
+    response = model.generate_content(question)
+    return response.text
 
-while True:
-    print("Select operation:")
-    print("1.Add")
-    print("2.Subtract")
-    print("3.Multiply")
-    print("4.Divide")
-    print("5.Exit")
-
-    choice = input("Enter choice(1/2/3/4/5):")
-
-    if choice in ('1', '2', '3', '4'):
-        num1 = float(input("Enter first number: "))
-        num2 = float(input("Enter second number: "))
-
-        if choice == '1':
-            print(num1,"+",num2,"=", add(num1,num2))
-
-        elif choice == '2':
-            print(num1,"-",num2,"=", subtract(num1,num2))
-
-        elif choice == '3':
-            print(num1,"*",num2,"=", multiply(num1,num2))
-
-        elif choice == '4':
-            if num2 == 0:
-                print("Cannot divide by zero")
-            else:
-                print(num1,"/",num2,"=", divide(num1,num2))
-
-    elif choice == '5':
-        break
-
-    else:
-        print("Invalid input")
+# Route 2: Returns a static paragraph of simple text
+@app.route('/intro', methods=['GET'])
+def intro():
+    return "Welcome to the Gemini API server! This service lets you ask natural language questions and get AI-generated responses. Use /query to ask your question via a POST request."
